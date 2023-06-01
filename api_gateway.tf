@@ -12,7 +12,7 @@ resource "aws_api_gateway_deployment" "cnae_gateway_deployment" {
   rest_api_id = aws_api_gateway_rest_api.cnae_gateway.id
   stage_name  = "dev"
 
-  depends_on = [ aws_api_gateway_integration.example_api_integration ]
+  depends_on = [aws_api_gateway_integration.example_api_integration]
 }
 
 resource "aws_api_gateway_resource" "example_resource" {

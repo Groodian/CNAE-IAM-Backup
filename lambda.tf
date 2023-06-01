@@ -1,7 +1,7 @@
 resource "aws_lambda_function" "lambda_test" {
   function_name = "lambda-test"
 
-  filename = "${path.module}/test_lambda/test.zip"
+  filename = "${path.module}/lambda/test/test.zip"
   role     = aws_iam_role.lambda_exec.arn
 
   runtime = "nodejs18.x"
@@ -12,11 +12,32 @@ resource "aws_lambda_function" "lambda_test" {
   depends_on = [aws_iam_role_policy_attachment.lambda_policy_attachment]
 }
 
+resource "aws_lambda_function" "lambda_pre_sign_up" {
+  function_name = "lambda-pre-sign-up"
+
+  filename = "${path.module}/lambda/pre_sign_up/pre_sign_up.zip"
+  role     = aws_iam_role.lambda_exec.arn
+
+  runtime = "nodejs18.x"
+  handler = "pre_sign_up.handler"
+
+  source_code_hash = data.archive_file.lambda_pre_sign_up_zip.output_base64sha256
+
+  depends_on = [aws_iam_role_policy_attachment.lambda_policy_attachment]
+}
+
 data "archive_file" "lambda_test_zip" {
   type = "zip"
 
-  source_dir  = "${path.module}/test_lambda/"
-  output_path = "${path.module}/test_lambda/test.zip"
+  source_dir  = "${path.module}/lambda/test"
+  output_path = "${path.module}/lambda/test/test.zip"
+}
+
+data "archive_file" "lambda_pre_sign_up_zip" {
+  type = "zip"
+
+  source_dir  = "${path.module}/lambda/pre_sign_up"
+  output_path = "${path.module}/lambda/pre_sign_up/pre_sign_up.zip"
 }
 
 resource "aws_cloudwatch_log_group" "lambda_test_log" {
@@ -47,7 +68,7 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-resource "aws_lambda_permission" "lambda_test_permission" {
+resource "aws_lambda_permission" "lambda_test_permission_gateway" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.lambda_test.function_name
@@ -55,3 +76,14 @@ resource "aws_lambda_permission" "lambda_test_permission" {
 
   source_arn = "${aws_api_gateway_rest_api.cnae_gateway.execution_arn}/*/*"
 }
+
+resource "aws_lambda_permission" "lambda_test_permission_cognito" {
+  statement_id  = "AllowExecutionFromCognito"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.lambda_pre_sign_up.function_name
+  principal     = "cognito-idp.amazonaws.com"
+
+  source_arn = aws_cognito_user_pool.cnae_user_pool.arn
+}
+
+
