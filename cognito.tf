@@ -16,3 +16,18 @@ resource "aws_cognito_user_pool_client" "cnae_user_pool_client" {
     "ALLOW_REFRESH_TOKEN_AUTH"
   ]
 }
+
+resource "aws_cognito_user_group" "admin_group" {
+  name         = "admin"
+  user_pool_id = aws_cognito_user_pool.cnae_user_pool.id
+}
+
+resource "aws_cognito_user_group" "professor_group" {
+  name         = "professor"
+  user_pool_id = aws_cognito_user_pool.cnae_user_pool.id
+}
+
+resource "aws_cognito_user_group" "student_group" {
+  name         = "student"
+  user_pool_id = aws_cognito_user_pool.cnae_user_pool.id
+}
