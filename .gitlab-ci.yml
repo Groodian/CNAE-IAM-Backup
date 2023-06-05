@@ -18,7 +18,6 @@ stages:
 before_script:
   - terraform init -upgrade -reconfigure -backend-config="password=${CI_JOB_TOKEN}"
 
-
 plan:
   stage: plan
   script:

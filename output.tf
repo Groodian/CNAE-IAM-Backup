@@ -9,3 +9,7 @@ output "cognito_user_pool_id" {
 output "cognito_user_pool_client_id" {
   value = aws_cognito_user_pool_client.cnae_user_pool_client.id
 }
+
+output "cognito_user_pool_client_url" {
+  value = aws_cognito_user_pool_domain.cnae_user_pool_domain.domain
+}

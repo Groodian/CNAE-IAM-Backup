@@ -10,11 +10,17 @@ resource "aws_cognito_user_pool_client" "cnae_user_pool_client" {
   name         = "cnae-user-pool-client"
   user_pool_id = aws_cognito_user_pool.cnae_user_pool.id
 
+  supported_identity_providers = ["COGNITO"]
   explicit_auth_flows = [
     "ALLOW_USER_PASSWORD_AUTH",
     "ALLOW_USER_SRP_AUTH",
     "ALLOW_REFRESH_TOKEN_AUTH"
   ]
+}
+
+resource "aws_cognito_user_pool_domain" "cnae_user_pool_domain" {
+  domain       = "cnae"
+  user_pool_id = aws_cognito_user_pool.cnae_user_pool.id
 }
 
 resource "aws_cognito_user_group" "admin_group" {
