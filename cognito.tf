@@ -23,6 +23,11 @@ resource "aws_cognito_user_pool_domain" "cnae_user_pool_domain" {
   user_pool_id = aws_cognito_user_pool.cnae_user_pool.id
 }
 
+resource "aws_cognito_user_pool_ui_customization" "example" {
+  client_id    = aws_cognito_user_pool_client.cnae_user_pool_client.id
+  user_pool_id = aws_cognito_user_pool_domain.cnae_user_pool_domain.user_pool_id
+}
+
 resource "aws_cognito_user_group" "admin_group" {
   name         = "admin"
   user_pool_id = aws_cognito_user_pool.cnae_user_pool.id
