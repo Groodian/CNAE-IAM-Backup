@@ -1,0 +1,40 @@
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+
+image:
+  name: registry.code.fbi.h-da.de/cloud-computing-technology/2023_sose/do45x/cnae_do45x_ci_base_image/base_image:latest
+
+variables:
+  TF_VAR_INFRASTRUCTURE_ACCESS_TOKEN:           ${INFRASTRUCTURE_ACCESS_TOKEN}
+  TF_VAR_INFRASTRUCTURE_ACCESS_TOKEN_USERNAME:  ${INFRASTRUCTURE_ACCESS_TOKEN_USERNAME}
+  TF_VAR_CI_REGISTRY_IMAGE:                     ${CI_REGISTRY_IMAGE}
+
+stages:
+  - plan
+  - apply
+  - destroy
+
+before_script:
+  - terraform init -upgrade -reconfigure -backend-config="password=${CI_JOB_TOKEN}"
+
+
+plan:
+  stage: plan
+  script:
+    - terraform fmt
+    - terraform validate
+    - terraform plan
+
+apply:
+  stage: apply
+  script:
+    - terraform apply -auto-approve
+  allow_failure: true
+  when: manual
+
+destroy:
+  stage: destroy
+  script:
+    - terraform destroy -auto-approve
+  when: manual

@@ -1,13 +1,12 @@
 terraform {
-  /*
   backend "http" {
-    address        = "https://code.fbi.h-da.de/api/v4/projects/29127/terraform/state/aws_infrastructure_state"
-    lock_address   = "https://code.fbi.h-da.de/api/v4/projects/29127/terraform/state/aws_infrastructure_state/lock"
-    unlock_address = "https://code.fbi.h-da.de/api/v4/projects/29127/terraform/state/aws_infrastructure_state/lock"
+    address        = "https://code.fbi.h-da.de/api/v4/projects/29307/terraform/state/aws_infrastructure_state"
+    lock_address   = "https://code.fbi.h-da.de/api/v4/projects/29307/terraform/state/aws_infrastructure_state/lock"
+    unlock_address = "https://code.fbi.h-da.de/api/v4/projects/29307/terraform/state/aws_infrastructure_state/lock"
     username       = "gitlab-ci-token"
     lock_method    = "POST"
     unlock_method  = "DELETE"
-  }*/
+  }
 
   required_providers {
     aws = {
