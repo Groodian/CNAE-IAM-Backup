@@ -1,5 +1,6 @@
-FROM registry.code.fbi.h-da.de/cloud-computing-technology/2023_sose/do45x/cnae_do45x_ci_base_image/base_image:latest
+FROM alpine/k8s:1.26.4
 
-RUN apk add npm --no-cache
+RUN apk update && apk upgrade
+RUN apk add util-linux docker openrc terraform npm --no-cache
 
 CMD [ "" ]
