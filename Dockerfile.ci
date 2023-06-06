@@ -1,0 +1,5 @@
+FROM registry.code.fbi.h-da.de/cloud-computing-technology/2023_sose/do45x/cnae_do45x_ci_base_image/base_image:latest
+
+RUN apk add npm --no-cache
+
+CMD [ "" ]

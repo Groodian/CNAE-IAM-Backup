@@ -3,14 +3,32 @@ workflow:
     - if: $CI_COMMIT_BRANCH == "master"
 
 image:
-  name: registry.code.fbi.h-da.de/cloud-computing-technology/2023_sose/do45x/cnae_do45x_ci_base_image/base_image:latest
+  name: registry.code.fbi.h-da.de/cloud-computing-technology/2023_sose/do45x/cnae_do45x_service_iam/base_image:latest
 
 variables:
   TF_VAR_INFRASTRUCTURE_ACCESS_TOKEN:           ${INFRASTRUCTURE_ACCESS_TOKEN}
   TF_VAR_INFRASTRUCTURE_ACCESS_TOKEN_USERNAME:  ${INFRASTRUCTURE_ACCESS_TOKEN_USERNAME}
   TF_VAR_CI_REGISTRY_IMAGE:                     ${CI_REGISTRY_IMAGE}
 
+build:base_image:
+  stage: build:base_image
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  before_script:
+    - ""
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - >-
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}/"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile.ci"
+      --destination "${CI_REGISTRY_IMAGE}/base_image:latest"
+    - echo ${CI_REGISTRY_IMAGE}
+
 stages:
+  - build:base_image
   - plan
   - apply
   - destroy
@@ -29,6 +47,10 @@ apply:
   stage: apply
   script:
     - cd /${CI_PROJECT_DIR}/lambda/test
+    - npm install
+    - cd /${CI_PROJECT_DIR}/lambda/post_sign_up
+    - npm install
+    - cd /${CI_PROJECT_DIR}/lambda/pre_sign_up
     - npm install
     - cd /${CI_PROJECT_DIR}
     - terraform apply -auto-approve
