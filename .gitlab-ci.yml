@@ -28,9 +28,9 @@ plan:
 apply:
   stage: apply
   script:
-    - cd /lambda/test
+    - cd /${CI_PROJECT_DIR}/lambda/test
     - npm install
-    - cd /
+    - cd /${CI_PROJECT_DIR}
     - terraform apply -auto-approve
   allow_failure: true
   when: manual
