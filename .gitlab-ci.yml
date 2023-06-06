@@ -12,6 +12,9 @@ variables:
 
 build:base_image:
   stage: build:base_image
+  rules:
+    - changes:
+      - /${CI_PROJECT_DIR}/Dockerfile.ci
   image:
     name: gcr.io/kaniko-project/executor:debug
     entrypoint: [""]

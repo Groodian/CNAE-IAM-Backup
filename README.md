@@ -35,7 +35,7 @@ curl --location --request POST 'https://cognito-idp.eu-central-1.amazonaws.com' 
 --header 'X-Amz-Target: AWSCognitoIdentityProviderService.SignUp' \
 --header 'Content-Type: application/x-amz-json-1.1' \
 --data-raw '{
-   "ClientId": "12p23hipkvdqgdujb0eob1fttt",
+   "ClientId": "42dq52boguo9i8jmhagd4t97c0",
    "Password": "<password>",
    "UserAttributes": [ 
       { 
@@ -58,12 +58,12 @@ curl --location --request POST 'https://cognito-idp.eu-central-1.amazonaws.com' 
       "USERNAME" : "<username>",
       "PASSWORD" : "<password>"
    },
-   "ClientId": "46lnrh5tqncurcagctvcprd0gm"
+   "ClientId": "42dq52boguo9i8jmhagd4t97c0"
 }'
 ```
 
 ### Example api
 Returns the content of your token. Use the IdToken from the login response.
 ```
-curl https://uxcx06pyn1.execute-api.eu-central-1.amazonaws.com/dev/example -H "Accept: application/json" -H "Authorization: Bearer <IdToken>"
+curl https://7efmtylol6.execute-api.eu-central-1.amazonaws.com/dev/example -H "Accept: application/json" -H "Authorization: Bearer <IdToken>"
 ```
