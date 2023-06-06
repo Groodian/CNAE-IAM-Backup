@@ -1,0 +1,14 @@
+{
+  "name": "post_sign_up",
+  "version": "1.0.0",
+  "description": "",
+  "main": "post_sign_up.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1391.0"
+  }
+}

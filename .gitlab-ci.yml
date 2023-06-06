@@ -28,6 +28,9 @@ plan:
 apply:
   stage: apply
   script:
+    - cd /lambda/test
+    - npm install
+    - cd /
     - terraform apply -auto-approve
   allow_failure: true
   when: manual

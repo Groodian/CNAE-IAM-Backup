@@ -2,7 +2,8 @@ resource "aws_cognito_user_pool" "cnae_user_pool" {
   name = "cnae-user-pool"
 
   lambda_config {
-    pre_sign_up = aws_lambda_function.lambda_pre_sign_up.arn
+    pre_sign_up       = aws_lambda_function.lambda_pre_sign_up.arn
+    post_confirmation = aws_lambda_function.lambda_post_sign_up.arn
   }
 }
 
