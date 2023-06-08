@@ -37,7 +37,7 @@ resource "aws_apigatewayv2_integration" "example_api_integration" {
 
 resource "aws_apigatewayv2_route" "route" {
   api_id             = aws_apigatewayv2_api.cnae_gateway.id
-  route_key          = "GET example"
+  route_key          = "GET /example"
   target             = "integrations/${aws_apigatewayv2_integration.example_api_integration.id}"
   authorization_type = "JWT"
   authorizer_id      = aws_apigatewayv2_authorizer.cnae_auth.id
