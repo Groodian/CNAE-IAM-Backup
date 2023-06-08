@@ -122,7 +122,7 @@ resource "aws_lambda_permission" "lambda_test_permission_gateway" {
   function_name = aws_lambda_function.lambda_test.function_name
   principal     = "apigateway.amazonaws.com"
 
-  source_arn = "${aws_api_gateway_rest_api.cnae_gateway.execution_arn}/*/*"
+  source_arn = "${aws_apigatewayv2_api.cnae_gateway.execution_arn}/*/*"
 }
 
 resource "aws_lambda_permission" "lambda_pre_sign_up_permission_cognito" {
