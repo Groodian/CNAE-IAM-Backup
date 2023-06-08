@@ -89,7 +89,7 @@ resource "kubernetes_service" "nginx" {
   }
   spec {
     selector = {
-      App = kubernetes_deployment.nginx.spec.0.template.0.metadata[0].labels.App
+      app = kubernetes_deployment.nginx.spec.0.template.0.metadata[0].labels.app
     }
     port {
       node_port   = 30201
