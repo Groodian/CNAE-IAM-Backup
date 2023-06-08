@@ -104,7 +104,7 @@ resource "kubernetes_service" "nginx" {
 # api gateway integration
 resource "aws_apigatewayv2_integration" "nginx" {
   api_id             = aws_apigatewayv2_api.cnae_gateway.id
-  integration_uri    = "arn:aws:elasticloadbalancing:eu-central-1:127526902476:loadbalancer/net/a80b63eb7568c4357b5e91df90a6aabf/d5e26d291ce58887"
+  integration_uri    = "arn:aws:elasticloadbalancing:eu-central-1:127526902476:listener/net/a80b63eb7568c4357b5e91df90a6aabf/d5e26d291ce58887/bb28469f74547c22"
   integration_type   = "HTTP_PROXY"
   integration_method = "ANY"
   connection_type    = "VPC_LINK"
@@ -114,7 +114,7 @@ resource "aws_apigatewayv2_integration" "nginx" {
 resource "aws_apigatewayv2_route" "nginx" {
   api_id             = aws_apigatewayv2_api.cnae_gateway.id
   route_key          = "GET /${var.MICROSERVICE_NAME}"
-  target             = "integrations/${aws_apigatewayv2_integration.example_api_integration.id}"
+  target             = "integrations/${aws_apigatewayv2_integration.nginx.id}"
   authorization_type = "JWT"
   authorizer_id      = aws_apigatewayv2_authorizer.cnae_auth.id
 }
