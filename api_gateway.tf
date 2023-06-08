@@ -42,3 +42,9 @@ resource "aws_apigatewayv2_route" "route" {
   authorization_type = "JWT"
   authorizer_id      = aws_apigatewayv2_authorizer.cnae_auth.id
 }
+
+resource "aws_apigatewayv2_vpc_link" "eks_link" {
+  name               = "nginx"
+  security_group_ids = [data.terraform_remote_state.infrastructure_state.outputs.cluster_security_group_id]
+  subnet_ids         = ["subnet-06806c00c6977eb55"] #"type": "aws_subnet" private
+}

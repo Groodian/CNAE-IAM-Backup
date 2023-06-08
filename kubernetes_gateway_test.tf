@@ -100,3 +100,21 @@ resource "kubernetes_service" "nginx" {
     type = "LoadBalancer"
   }
 }
+
+# api gateway integration
+resource "aws_apigatewayv2_integration" "nginx" {
+  api_id             = aws_apigatewayv2_api.cnae_gateway.id
+  integration_uri    = "arn:aws:elasticloadbalancing:eu-central-1:127526902476:loadbalancer/net/a80b63eb7568c4357b5e91df90a6aabf/d5e26d291ce58887"
+  integration_type   = "HTTP_PROXY"
+  integration_method = "ANY"
+  connection_type    = "VPC_LINK"
+  connection_id      = aws_apigatewayv2_vpc_link.eks_link.id
+}
+
+resource "aws_apigatewayv2_route" "nginx" {
+  api_id             = aws_apigatewayv2_api.cnae_gateway.id
+  route_key          = "GET /${var.MICROSERVICE_NAME}"
+  target             = "integrations/${aws_apigatewayv2_integration.example_api_integration.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.cnae_auth.id
+}
