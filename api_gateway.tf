@@ -27,6 +27,18 @@ resource "aws_apigatewayv2_stage" "cnae_stage" {
   auto_deploy = true
 }
 
+resource "aws_security_group" "vpc_link" {
+  name   = "api-gateway_vpc-link"
+  vpc_id = "vpc-09adcd25b166d1c47"
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_apigatewayv2_integration" "example_api_integration" {
   api_id             = aws_apigatewayv2_api.cnae_gateway.id
   integration_type   = "AWS_PROXY"
@@ -45,6 +57,6 @@ resource "aws_apigatewayv2_route" "route" {
 
 resource "aws_apigatewayv2_vpc_link" "eks_link" {
   name               = "nginx"
-  security_group_ids = [data.terraform_remote_state.infrastructure_state.outputs.cluster_security_group_id]
+  security_group_ids = [aws_security_group.vpc_link.id]
   subnet_ids         = ["subnet-06806c00c6977eb55"] #"type": "aws_subnet" private
 }
