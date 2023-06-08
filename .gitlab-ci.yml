@@ -6,9 +6,12 @@ image:
   name: registry.code.fbi.h-da.de/cloud-computing-technology/2023_sose/do45x/cnae_do45x_service_iam/base_image:latest
 
 variables:
+  TF_VAR_AWS_REGION:                            "eu-central-1"
+  TF_VAR_CLUSTER_NAME:                          "cnae_do45x_eks_cluster"
   TF_VAR_INFRASTRUCTURE_ACCESS_TOKEN:           ${INFRASTRUCTURE_ACCESS_TOKEN}
   TF_VAR_INFRASTRUCTURE_ACCESS_TOKEN_USERNAME:  ${INFRASTRUCTURE_ACCESS_TOKEN_USERNAME}
   TF_VAR_CI_REGISTRY_IMAGE:                     ${CI_REGISTRY_IMAGE}
+  TF_VAR_MICROSERVICE_NAME:                     "gateway-test"
 
 build:base_image:
   stage: build:base_image
@@ -37,6 +40,7 @@ stages:
   - destroy
 
 before_script:
+  - aws eks --region ${TF_VAR_AWS_REGION} update-kubeconfig --name ${TF_VAR_CLUSTER_NAME} # Get kubeconfig from generated aws-eks cluster
   - terraform init -upgrade -reconfigure -backend-config="password=${CI_JOB_TOKEN}"
 
 plan:
@@ -57,6 +61,7 @@ apply:
     - npm install
     - cd /${CI_PROJECT_DIR}
     - terraform apply -auto-approve
+    - kubectl rollout restart deployment ${TF_VAR_MICROSERVICE_NAME}-deployment
   allow_failure: true
   when: manual
 

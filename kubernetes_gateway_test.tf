@@ -1,13 +1,3 @@
-data "terraform_remote_state" "infrastructure_state" {
-  backend = "http"
-
-  config = {
-    address  = "https://code.fbi.h-da.de/api/v4/projects/29127/terraform/state/aws_infrastructure_state"
-    username = "${var.INFRASTRUCTURE_ACCESS_TOKEN_USERNAME}"
-    password = "${var.INFRASTRUCTURE_ACCESS_TOKEN}"
-  }
-}
-
 variable "INFRASTRUCTURE_ACCESS_TOKEN" {
   description = "Value of $INFRASTRUCTURE_ACCESS_TOKEN from gitlab-ci"
   type        = string
@@ -16,6 +6,21 @@ variable "INFRASTRUCTURE_ACCESS_TOKEN" {
 variable "INFRASTRUCTURE_ACCESS_TOKEN_USERNAME" {
   description = "Value of $INFRASTRUCTURE_ACCESS_TOKEN_USERNAME from gitlab-ci"
   type        = string
+}
+
+variable "MICROSERVICE_NAME" {
+  description = "Deployment name of microservice"
+  type        = string
+}
+
+data "terraform_remote_state" "infrastructure_state" {
+  backend = "http"
+
+  config = {
+    address  = "https://code.fbi.h-da.de/api/v4/projects/29127/terraform/state/aws_infrastructure_state"
+    username = "${var.INFRASTRUCTURE_ACCESS_TOKEN_USERNAME}"
+    password = "${var.INFRASTRUCTURE_ACCESS_TOKEN}"
+  }
 }
 
 # Retrieve information about an EKS Cluster.
@@ -30,9 +35,9 @@ data "aws_eks_cluster_auth" "cluster" {
 
 resource "kubernetes_deployment" "nginx" {
   metadata {
-    name = "scalable-nginx-example"
+    name = "${var.MICROSERVICE_NAME}-deployment"
     labels = {
-      App = "ScalableNginxExample"
+      app = var.MICROSERVICE_NAME
     }
   }
 
@@ -40,19 +45,19 @@ resource "kubernetes_deployment" "nginx" {
     replicas = 2
     selector {
       match_labels = {
-        App = "ScalableNginxExample"
+        app = var.MICROSERVICE_NAME
       }
     }
     template {
       metadata {
         labels = {
-          App = "ScalableNginxExample"
+          app = var.MICROSERVICE_NAME
         }
       }
       spec {
         container {
           image = "nginx:1.7.8"
-          name  = "example"
+          name  = var.MICROSERVICE_NAME
 
           port {
             container_port = 80
@@ -76,7 +81,7 @@ resource "kubernetes_deployment" "nginx" {
 
 resource "kubernetes_service" "nginx" {
   metadata {
-    name = "nginx-example"
+    name = "${var.MICROSERVICE_NAME}-service"
     annotations = {
       "service.beta.kubernetes.io/aws-load-balancer-type"     = "nlb"
       "service.beta.kubernetes.io/aws-load-balancer-internal" = "true"
