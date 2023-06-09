@@ -64,5 +64,5 @@ resource "aws_apigatewayv2_route" "test_route" {
 resource "aws_apigatewayv2_vpc_link" "eks_link" {
   name               = "eks-link"
   security_group_ids = [aws_security_group.vpc_link.id]
-  subnet_ids         = [data.terraform_remote_state.infrastructure_state.outputs.subnet_private_id]
+  subnet_ids         = data.terraform_remote_state.infrastructure_state.outputs.subnet_private_ids
 }
