@@ -27,6 +27,12 @@ resource "aws_apigatewayv2_stage" "cnae_stage" {
   auto_deploy = true
 }
 
+resource "aws_apigatewayv2_api_mapping" "cnae_mapping" {
+  api_id      = aws_apigatewayv2_api.cnae_gateway.id
+  domain_name = aws_apigatewayv2_domain_name.api.id
+  stage       = aws_apigatewayv2_stage.cnae_stage.id
+}
+
 resource "aws_security_group" "vpc_link" {
   name   = "api-gateway_vpc-link"
   vpc_id = data.terraform_remote_state.infrastructure_state.outputs.vpc_id
