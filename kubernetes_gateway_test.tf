@@ -104,7 +104,7 @@ resource "kubernetes_service" "nginx" {
 # api gateway integration
 resource "aws_apigatewayv2_integration" "nginx" {
   api_id             = aws_apigatewayv2_api.cnae_gateway.id
-  integration_uri    = "arn:aws:elasticloadbalancing:eu-central-1:127526902476:listener/net/afaa49be3d8804a3b92dddd17c1e17d3/6e478d1a10013358/14b28f91d5e32af7"
+  integration_uri    = "arn:aws:elasticloadbalancing:eu-central-1:127526902476:listener/net/a464077e8ba254ad1b71a0b5d144064f/b6e80f40f4e4f15a/22d838d86df3fade"
   integration_type   = "HTTP_PROXY"
   integration_method = "ANY"
   connection_type    = "VPC_LINK"
