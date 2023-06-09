@@ -35,7 +35,7 @@ curl --location --request POST 'https://cognito-idp.eu-central-1.amazonaws.com' 
 --header 'X-Amz-Target: AWSCognitoIdentityProviderService.SignUp' \
 --header 'Content-Type: application/x-amz-json-1.1' \
 --data-raw '{
-   "ClientId": "42dq52boguo9i8jmhagd4t97c0",
+   "ClientId": "<cognito-client-id>",
    "Password": "<password>",
    "UserAttributes": [ 
       { 
@@ -58,7 +58,7 @@ curl --location --request POST 'https://cognito-idp.eu-central-1.amazonaws.com' 
       "USERNAME" : "<username>",
       "PASSWORD" : "<password>"
    },
-   "ClientId": "42dq52boguo9i8jmhagd4t97c0"
+   "ClientId": "<cognito-client-id>"
 }'
 ```
 

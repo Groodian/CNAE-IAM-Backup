@@ -29,7 +29,7 @@ resource "aws_apigatewayv2_stage" "cnae_stage" {
 
 resource "aws_security_group" "vpc_link" {
   name   = "api-gateway_vpc-link"
-  vpc_id = "vpc-09adcd25b166d1c47"
+  vpc_id = data.terraform_remote_state.infrastructure_state.outputs.vpc_id
 
   egress {
     from_port   = 0
@@ -39,7 +39,7 @@ resource "aws_security_group" "vpc_link" {
   }
 }
 
-resource "aws_apigatewayv2_integration" "example_api_integration" {
+resource "aws_apigatewayv2_integration" "test_integration" {
   api_id             = aws_apigatewayv2_api.cnae_gateway.id
   integration_type   = "AWS_PROXY"
   connection_type    = "INTERNET"
@@ -47,16 +47,16 @@ resource "aws_apigatewayv2_integration" "example_api_integration" {
   integration_uri    = aws_lambda_function.lambda_test.invoke_arn
 }
 
-resource "aws_apigatewayv2_route" "route" {
+resource "aws_apigatewayv2_route" "test_route" {
   api_id             = aws_apigatewayv2_api.cnae_gateway.id
   route_key          = "GET /example"
-  target             = "integrations/${aws_apigatewayv2_integration.example_api_integration.id}"
+  target             = "integrations/${aws_apigatewayv2_integration.test_integration.id}"
   authorization_type = "JWT"
   authorizer_id      = aws_apigatewayv2_authorizer.cnae_auth.id
 }
 
 resource "aws_apigatewayv2_vpc_link" "eks_link" {
-  name               = "nginx"
+  name               = "eks-link"
   security_group_ids = [aws_security_group.vpc_link.id]
-  subnet_ids         = ["subnet-06806c00c6977eb55"] #"type": "aws_subnet" private
+  subnet_ids         = [data.terraform_remote_state.infrastructure_state.outputs.subnet_private_id]
 }
