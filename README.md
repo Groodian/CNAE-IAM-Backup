@@ -67,3 +67,6 @@ Returns the content of your token. Use the IdToken from the login response.
 ```
 curl https://api.cnae-x.de/dev/example -H "Accept: application/json" -H "Authorization: Bearer <IdToken>"
 ```
+```
+curl https://api.cnae-x.de/dev/gateway-test -H "Accept: application/json" -H "Authorization: Bearer <IdToken>"
+```
