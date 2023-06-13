@@ -109,7 +109,7 @@ data "aws_elb" "nginx" {
 }
 
 data "aws_lb_listener" "nginx" {
-  load_balancer_arn = data.aws_lb.nginx.arn
+  load_balancer_arn = data.aws_elb.nginx.arn
   port              = 80
 }
 
