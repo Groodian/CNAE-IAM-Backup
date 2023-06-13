@@ -104,7 +104,7 @@ resource "kubernetes_service" "nginx" {
 
 # api gateway integration
 data "aws_lb" "nginx" {
-  name       = kubernetes_service.nginx.metadata[0].annotations["service.beta.kubernetes.io/aws-load-balancer-name"]
+  name       = "ac68a8e2389624563ac5d7d3f51dc94f"
   depends_on = [kubernetes_service.nginx]
 }
 
