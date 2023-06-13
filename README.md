@@ -29,6 +29,8 @@
 ```
 
 ## Curl examples
+`<cognito-client-id>` can be found in the terraform output in the pipeline.
+
 ### Create user
 ```
 curl --location --request POST 'https://cognito-idp.eu-central-1.amazonaws.com' \

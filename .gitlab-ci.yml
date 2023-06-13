@@ -8,8 +8,8 @@ image:
 variables:
   TF_VAR_AWS_REGION:                            "eu-central-1"
   TF_VAR_CLUSTER_NAME:                          "cnae_do45x_eks_cluster"
-  TF_VAR_INFRASTRUCTURE_ACCESS_TOKEN:           ${INFRASTRUCTURE_ACCESS_TOKEN}
-  TF_VAR_INFRASTRUCTURE_ACCESS_TOKEN_USERNAME:  ${INFRASTRUCTURE_ACCESS_TOKEN_USERNAME}
+  TF_VAR_GROUP_ACCESS_TOKEN:                    ${GROUP_ACCESS_TOKEN}
+  TF_VAR_GROUP_ACCESS_TOKEN_USERNAME:           ${GROUP_ACCESS_TOKEN_USERNAME}
   TF_VAR_CI_REGISTRY_IMAGE:                     ${CI_REGISTRY_IMAGE}
   TF_VAR_MICROSERVICE_NAME:                     "gateway-test"
 

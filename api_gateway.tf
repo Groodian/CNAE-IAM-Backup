@@ -37,7 +37,7 @@ resource "aws_apigatewayv2_api_mapping" "cnae_mapping_dev" {
   api_id          = aws_apigatewayv2_api.cnae_gateway.id
   domain_name     = aws_apigatewayv2_domain_name.api.id
   stage           = aws_apigatewayv2_stage.cnae_stage.id
-  api_mapping_key = "dev"
+  api_mapping_key = "*"
 }
 
 resource "aws_security_group" "vpc_link" {

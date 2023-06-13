@@ -1,10 +1,10 @@
-variable "INFRASTRUCTURE_ACCESS_TOKEN" {
-  description = "Value of $INFRASTRUCTURE_ACCESS_TOKEN from gitlab-ci"
+variable "GROUP_ACCESS_TOKEN" {
+  description = "Value of $GROUP_ACCESS_TOKEN from gitlab-ci"
   type        = string
 }
 
-variable "INFRASTRUCTURE_ACCESS_TOKEN_USERNAME" {
-  description = "Value of $INFRASTRUCTURE_ACCESS_TOKEN_USERNAME from gitlab-ci"
+variable "GROUP_ACCESS_TOKEN_USERNAME" {
+  description = "Value of $GROUP_ACCESS_TOKEN_USERNAME from gitlab-ci"
   type        = string
 }
 
@@ -18,8 +18,8 @@ data "terraform_remote_state" "infrastructure_state" {
 
   config = {
     address  = "https://code.fbi.h-da.de/api/v4/projects/29127/terraform/state/aws_infrastructure_state"
-    username = "${var.INFRASTRUCTURE_ACCESS_TOKEN_USERNAME}"
-    password = "${var.INFRASTRUCTURE_ACCESS_TOKEN}"
+    username = "${var.GROUP_ACCESS_TOKEN_USERNAME}"
+    password = "${var.GROUP_ACCESS_TOKEN}"
   }
 }
 
@@ -85,7 +85,6 @@ resource "kubernetes_service" "nginx" {
     annotations = {
       "service.beta.kubernetes.io/aws-load-balancer-type"     = "nlb"
       "service.beta.kubernetes.io/aws-load-balancer-internal" = "true"
-      "service.beta.kubernetes.io/aws-load-balancer-name"     = "nginx-lb"
     }
   }
   spec {
@@ -120,11 +119,14 @@ resource "aws_apigatewayv2_integration" "nginx" {
   integration_method = "ANY"
   connection_type    = "VPC_LINK"
   connection_id      = aws_apigatewayv2_vpc_link.eks_link.id
+  request_parameters = {
+    "overwrite:path" = "$request.path.proxy"
+  }
 }
 
 resource "aws_apigatewayv2_route" "nginx" {
   api_id             = aws_apigatewayv2_api.cnae_gateway.id
-  route_key          = "GET /${var.MICROSERVICE_NAME}"
+  route_key          = "ANY /${var.MICROSERVICE_NAME}/{proxy+}"
   target             = "integrations/${aws_apigatewayv2_integration.nginx.id}"
   authorization_type = "JWT"
   authorizer_id      = aws_apigatewayv2_authorizer.cnae_auth.id
