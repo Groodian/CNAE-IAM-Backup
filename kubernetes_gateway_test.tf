@@ -102,9 +102,18 @@ resource "kubernetes_service" "nginx" {
 }
 
 # api gateway integration
+data "aws_lb" "nginx" {
+  name = kubernetes_service.nginx.status[0].load_balancer[0].ingress[0].hostname
+}
+
+data "aws_lb_listener" "nginx" {
+  load_balancer_arn = data.aws_lb.nginx.arn
+  port              = 80
+}
+
 resource "aws_apigatewayv2_integration" "nginx" {
   api_id             = aws_apigatewayv2_api.cnae_gateway.id
-  integration_uri    = "arn:aws:elasticloadbalancing:eu-central-1:127526902476:listener/net/a464077e8ba254ad1b71a0b5d144064f/b6e80f40f4e4f15a/22d838d86df3fade"
+  integration_uri    = data.aws_lb_listener.nginx.arn
   integration_type   = "HTTP_PROXY"
   integration_method = "ANY"
   connection_type    = "VPC_LINK"
