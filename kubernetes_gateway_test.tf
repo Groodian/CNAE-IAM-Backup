@@ -107,7 +107,7 @@ resource "kubernetes_service" "nginx" {
 data "aws_lb" "nginx" {
   name = kubernetes_service.nginx.metadata[0].annotations["service.beta.kubernetes.io/aws-load-balancer-name"]
   depends_on = [ kubernetes_service.nginx ]
-}*/
+}
 
 data "aws_lb_listener" "nginx" {
   load_balancer_arn = data.aws_lb.nginx.arn
@@ -129,4 +129,4 @@ resource "aws_apigatewayv2_route" "nginx" {
   target             = "integrations/${aws_apigatewayv2_integration.nginx.id}"
   authorization_type = "JWT"
   authorizer_id      = aws_apigatewayv2_authorizer.cnae_auth.id
-}
+}*/
