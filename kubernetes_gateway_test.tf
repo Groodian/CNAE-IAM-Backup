@@ -120,7 +120,7 @@ resource "aws_apigatewayv2_integration" "nginx" {
   connection_type    = "VPC_LINK"
   connection_id      = aws_apigatewayv2_vpc_link.eks_link.id
   request_parameters = {
-    "overwrite:path" = "$request.path.proxy"
+    "overwrite:path" = "/$request.path.proxy"
   }
 }
 
