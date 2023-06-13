@@ -67,8 +67,8 @@ curl --location --request POST 'https://cognito-idp.eu-central-1.amazonaws.com' 
 ### Example api
 Returns the content of your token. Use the IdToken from the login response.
 ```
-curl https://api.cnae-x.de/dev/example -H "Accept: application/json" -H "Authorization: Bearer <IdToken>"
+curl https://api.cnae-x.de/example -H "Accept: application/json" -H "Authorization: Bearer <IdToken>"
 ```
 ```
-curl https://api.cnae-x.de/dev/gateway-test/ -H "Accept: application/json" -H "Authorization: Bearer <IdToken>"
+curl https://api.cnae-x.de/gateway-test/ -H "Accept: application/json" -H "Authorization: Bearer <IdToken>"
 ```
