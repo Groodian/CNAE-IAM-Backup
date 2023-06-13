@@ -85,7 +85,7 @@ resource "kubernetes_service" "nginx" {
     annotations = {
       "service.beta.kubernetes.io/aws-load-balancer-type"     = "nlb"
       "service.beta.kubernetes.io/aws-load-balancer-internal" = "true"
-      "service.beta.kubernetes.io/aws-load-balancer-name"     = "nginx"
+      "service.beta.kubernetes.io/aws-load-balancer-name"     = "nginx-lb"
     }
   }
   spec {
@@ -103,13 +103,13 @@ resource "kubernetes_service" "nginx" {
 }
 
 # api gateway integration
-data "aws_elb" "nginx" {
+data "aws_lb" "nginx" {
   name       = kubernetes_service.nginx.metadata[0].annotations["service.beta.kubernetes.io/aws-load-balancer-name"]
   depends_on = [kubernetes_service.nginx]
 }
 
 data "aws_lb_listener" "nginx" {
-  load_balancer_arn = data.aws_elb.nginx.arn
+  load_balancer_arn = data.aws_lb.nginx.arn
   port              = 80
 }
 
