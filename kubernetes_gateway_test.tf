@@ -85,7 +85,7 @@ resource "kubernetes_service" "nginx" {
     annotations = {
       "service.beta.kubernetes.io/aws-load-balancer-type"     = "nlb"
       "service.beta.kubernetes.io/aws-load-balancer-internal" = "true"
-      "service.beta.kubernetes.io/aws-load-balancer-name" = "nginx"
+      "service.beta.kubernetes.io/aws-load-balancer-name"     = "nginx"
     }
   }
   spec {
@@ -103,10 +103,9 @@ resource "kubernetes_service" "nginx" {
 }
 
 # api gateway integration
-/*
 data "aws_lb" "nginx" {
-  name = kubernetes_service.nginx.metadata[0].annotations["service.beta.kubernetes.io/aws-load-balancer-name"]
-  depends_on = [ kubernetes_service.nginx ]
+  name       = kubernetes_service.nginx.metadata[0].annotations["service.beta.kubernetes.io/aws-load-balancer-name"]
+  depends_on = [kubernetes_service.nginx]
 }
 
 data "aws_lb_listener" "nginx" {
@@ -129,4 +128,4 @@ resource "aws_apigatewayv2_route" "nginx" {
   target             = "integrations/${aws_apigatewayv2_integration.nginx.id}"
   authorization_type = "JWT"
   authorizer_id      = aws_apigatewayv2_authorizer.cnae_auth.id
-}*/
+}
