@@ -25,3 +25,15 @@ output "api_gateway_eks_link_id" {
 output "api_gateway_authorizer" {
   value = aws_apigatewayv2_authorizer.cnae_auth.id
 }
+
+output "coginto_group_name_admin" {
+  value = aws_cognito_user_group.admin_group.name
+}
+
+output "coginto_group_name_professor" {
+  value = aws_cognito_user_group.professor_group.name
+}
+
+output "coginto_group_name_student" {
+  value = aws_cognito_user_group.student_group.name
+}
